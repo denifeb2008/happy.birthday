@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Typing Love Message</title>
   <style>
     body {
@@ -13,6 +14,7 @@
       align-items: center;
       flex-direction: column;
       height: 100vh;
+      margin: 0;
     }
 
     #message-box {
@@ -21,18 +23,20 @@
       border-radius: 20px;
       padding: 30px;
       max-width: 600px;
-      font-size: 1.5em;
+      font-size: 1.2rem;
       white-space: pre-wrap;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
+      line-height: 1.4;
     }
 
     .cursor {
       display: inline-block;
       width: 10px;
+      height: 1em;
       background-color: #e91e63;
       animation: blink 0.8s infinite;
-      margin-left: 3px;
+      vertical-align: bottom;
+      margin-left: 4px;
     }
 
     @keyframes blink {
@@ -40,34 +44,16 @@
       25%, 75% { opacity: 0; }
     }
 
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #e91e63;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    button:hover {
-      background-color: #d81b60;
+    /* Responsif kecil */
+    @media (max-width: 520px) {
+      #message-box { font-size: 1rem; padding: 20px; max-width: 90%; }
     }
   </style>
 </head>
 <body>
-  <div id="message-box">
-    <span id="text"></span><span class="cursor"></span>
+  <div id="message-box" aria-live="polite">
+    <span id="text"></span><span class="cursor" aria-hidden="true"></span>
   </div>
-
-  <!-- Tombol Play/Pause -->
-  <button id="playBtn">▶ Play Music</button>
-
-  <!-- Audio dengan file baru -->
-  <audio id="bgMusic" loop>
-    <source src="data:audio/mpeg;base64,SUQzAwAAAAg8ZFRJVDIAAAArAAAB//5UAGUAcgBiAHUAYQBuAGcAIABEAGEAbABhAG0AIABXAGEAawB0AHUAVFBFMQAAABUAAAH//kIAYQByAGEAcwB1AGEAcgBhAFRBTEIAAAAfAAAB//5KAGEAbABhAHIAYQBuACAAUwBhAGQAcgBhAGgAVFlFUgAAAAUAAAAyMDI0..." type="audio/mpeg">
-  </audio>
 
   <script>
     const message = `Happy birthday raniaa🎉🎉
@@ -89,37 +75,17 @@ btw ini maksud aku dari terusan pesan yg aku pernah kirim ke kamu itu😂
 Aku cinta kamu, hari ini dan seterusnya. 💘`;
 
     let i = 0;
+    const textEl = document.getElementById('text');
+
     function typeText() {
       if (i < message.length) {
-        document.getElementById("text").innerHTML += message.charAt(i);
+        textEl.textContent += message.charAt(i);
         i++;
         setTimeout(typeText, 50);
       }
     }
 
-    const music = document.getElementById("bgMusic");
-    const playBtn = document.getElementById("playBtn");
-
-    function toggleMusic() {
-      if (music.paused) {
-        music.play();
-        playBtn.textContent = "⏸ Pause Music";
-      } else {
-        music.pause();
-        playBtn.textContent = "▶ Play Music";
-      }
-    }
-
-    playBtn.addEventListener("click", toggleMusic);
-
-    window.onload = () => {
-      typeText();
-      music.play().then(() => {
-        playBtn.textContent = "⏸ Pause Music";
-      }).catch(() => {
-        console.log("Autoplay diblokir, klik tombol untuk memulai musik.");
-      });
-    };
+    window.addEventListener('load', typeText);
   </script>
 </body>
 </html>
