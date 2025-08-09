@@ -39,6 +39,21 @@
       0%, 50%, 100% { opacity: 1; }
       25%, 75% { opacity: 0; }
     }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #d81b60;
+    }
   </style>
 </head>
 <body>
@@ -46,11 +61,14 @@
     <span id="text"></span><span class="cursor"></span>
   </div>
 
-  <!-- Lagu diputar otomatis tanpa tampilan -->
-  <iframe width="0" height="0" style="display: none;"
-    src="https://www.youtube.com/embed/LqaheE15XFU?autoplay=1&loop=1&playlist=LqaheE15XFU"
-    frameborder="0" allow="autoplay">
-  </iframe>
+  <!-- Tombol Play/Pause -->
+  <button id="playBtn">▶ Play Music</button>
+
+  <!-- Audio -->
+  <audio id="bgMusic" loop>
+    <source src="ssstik.io_1754710506070.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung pemutar audio.
+  </audio>
 
   <script>
     const message = `Happy birthday raniaa🎉🎉
@@ -80,7 +98,32 @@ Aku cinta kamu, hari ini dan seterusnya. 💘`;
       }
     }
 
-    window.onload = typeText;
+    const music = document.getElementById("bgMusic");
+    const playBtn = document.getElementById("playBtn");
+
+    // Fungsi toggle play/pause
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        playBtn.textContent = "⏸ Pause Music";
+      } else {
+        music.pause();
+        playBtn.textContent = "▶ Play Music";
+      }
+    }
+
+    // Event klik tombol
+    playBtn.addEventListener("click", toggleMusic);
+
+    // Autoplay saat halaman load
+    window.onload = () => {
+      typeText();
+      music.play().then(() => {
+        playBtn.textContent = "⏸ Pause Music";
+      }).catch(() => {
+        console.log("Autoplay diblokir, klik tombol untuk memulai musik.");
+      });
+    };
   </script>
 </body>
 </html>
